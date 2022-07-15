@@ -302,7 +302,7 @@
 
 
                                                             <a class="btn btn-danger mt-1"
-                                                               href="/admin/delete/programming_skill/{{ $datas->id }}">
+                                                               href="/admin/delete/message/{{ $datas->id }}">
                                                                 <i class="fa-solid fa-trash"></i>
                                                             </a>
                                                         </td>

@@ -12,20 +12,66 @@ use App\Models\MyResume;
 use App\Models\MySkill;
 use App\Models\DesignSkill;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Session;
 
 
 class AdminController extends Controller
 {
-    public function dashboard()
+
+    public function adminLogin()
     {
 
-        $allSection = SectionControl::all()->first();
-        $allHome = HomeController::all()->first();
-        $addProfile = Admin::all()->first();
+        return view('Admin.login');
 
-        // return view('Admin.Index',compact('allSection'));
+    }
 
-        return view('Admin.Index', compact(['allSection', 'allHome', 'addProfile']));
+    public function checkUser(Request $request)
+    {
+
+        $user = Admin::Where('email', '=', $request->email)->Where('password', '=', $request->password)->first();
+
+        if ($user == true) {
+
+
+            $request->Session()->put('loginId', $user->id);
+            return redirect()->route('admin_dashboard');
+
+        } else {
+            return back()->with('fail', 'something wrong!! mail or password is not Registered');
+
+        }
+
+    }
+
+
+    public function dashboard(Request $request)
+    {
+
+        if ($request->session()->get('loginId') == "") {
+
+            return redirect('/admin/login');
+
+        } else {
+
+            $allSection = SectionControl::all()->first();
+            $allHome = HomeController::all()->first();
+            $addProfile = Admin::all()->first();
+
+            // return view('Admin.Index',compact('allSection'));
+
+            return view('Admin.Index', compact(['allSection', 'allHome', 'addProfile']));
+
+        }
+
+
+    }
+
+    public function logout(){
+
+        if (Session::has('loginId')){
+            Session::pull('loginId');
+            return redirect()->route('login');
+        }
     }
 
 
@@ -111,31 +157,31 @@ class AdminController extends Controller
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
 
-        $allContact=Contact::get();
+        $allContact = Contact::get();
 
-        return view('Admin.contact', compact(['allHome', 'addProfile','allContact']));
+        return view('Admin.contact', compact(['allHome', 'addProfile', 'allContact']));
     }
 
     public function updateContactStatus($id)
     {
 
         //get that message
-        $message=DB::table('contacts')
+        $message = DB::table('contacts')
             ->select('status')
-            ->where('id','=',$id)
+            ->where('id', '=', $id)
             ->first();
 
 
-        if ($message->status=='1'){
-            $status='0';
-        }else{
-            $status='1';
+        if ($message->status == '1') {
+            $status = '0';
+        } else {
+            $status = '1';
         }
 
         //update status
-        $val=array('status'=>$status);
+        $val = array('status' => $status);
         DB::table('contacts')
-            ->where('id',$id)
+            ->where('id', $id)
             ->update($val);
 
 
@@ -252,7 +298,7 @@ class AdminController extends Controller
         $getAllProfile = Admin::all()->first();
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
-        return view('Admin.profile', compact(['getAllProfile','allHome','addProfile']));
+        return view('Admin.profile', compact(['getAllProfile', 'allHome', 'addProfile']));
         //return view('Admin.profile');
     }
 
@@ -262,29 +308,32 @@ class AdminController extends Controller
         $input = $request->all();
 
         //img--------
+        if ($request->hasFile('image')) {
+            $fileNameWithTxt = $request->file('image')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
+            $extension = $request->file('image')->getClientOriginalExtension();
 
-        $fileNameWithTxt = $request->file('image')->getClientOriginalName();
-        $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
-        $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            $path = $request->file('image')->move('images', $fileNameToStore);
 
-        $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
-        $path = $request->file('image')->move('images', $fileNameToStore);
+            $input['img'] = $fileNameToStore;
+        }
 
-        $input['img'] = $fileNameToStore;
 
         //end image------
 
 
         //resume------
+        if ($request->hasFile('resume')) {
+            $fileNameWithTxt1 = $request->file('resume')->getClientOriginalName();
+            $fileName1 = pathinfo($fileNameWithTxt1, PATHINFO_FILENAME);
+            $extension1 = $request->file('resume')->getClientOriginalExtension();
 
-        $fileNameWithTxt1 = $request->file('resume')->getClientOriginalName();
-        $fileName1 = pathinfo($fileNameWithTxt1, PATHINFO_FILENAME);
-        $extension1 = $request->file('resume')->getClientOriginalExtension();
+            $fileNameToStore1 = $fileName1 . '_' . time() . '.' . $extension1;
+            $path = $request->file('resume')->move('resume', $fileNameToStore1);
 
-        $fileNameToStore1 = $fileName1 . '_' . time() . '.' . $extension1;
-        $path = $request->file('resume')->move('resume', $fileNameToStore1);
-
-        $input['resume'] = $fileNameToStore1;
+            $input['resume'] = $fileNameToStore1;
+        }
 
         // end resume------
 
@@ -305,33 +354,37 @@ class AdminController extends Controller
 
     public function updateProfile(Request $request)
     {
-
-        //img--------
-
+//        $input2 = $request->all();
+//        //img--------
+//        if ($request->hasFile('image')){
         $fileNameWithTxt = $request->file('image')->getClientOriginalName();
         $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
         $extension = $request->file('image')->getClientOriginalExtension();
 
         $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
         $path = $request->file('image')->move('images', $fileNameToStore);
+        $input['img'] = $fileNameToStore;
+        // }
 
 
         //end image------
 
 
         //resume------
-
+//        if ($request->file('resume')){
         $fileNameWithTxt1 = $request->file('resume')->getClientOriginalName();
         $fileName1 = pathinfo($fileNameWithTxt1, PATHINFO_FILENAME);
         $extension1 = $request->file('resume')->getClientOriginalExtension();
 
         $fileNameToStore1 = $fileName1 . '_' . time() . '.' . $extension1;
         $path = $request->file('resume')->move('resume', $fileNameToStore1);
+        $input['resume'] = $fileNameToStore1;
+        //  }
 
 
         // end resume------
 
-
+        // Admin::updated($input2);
         $allAboutInfo = DB::table('admins')
             ->where('id', 1)
             ->update([
@@ -467,6 +520,14 @@ class AdminController extends Controller
         return back()->with('addEducation', 'Education Background Added Successfully');
 
     }
+
+    public function deleteMessage($id){
+
+        Contact::where('id',$id)->delete();
+        return back()->with('deleteMessage','Message deleted successfully');
+
+    }
+
 
 
 

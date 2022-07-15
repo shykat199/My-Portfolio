@@ -401,7 +401,7 @@
                                                                class="form-label mt-3">Your Resume</label>
                                                         <input name="resume" class="form-control" type="file"
                                                                id="formFileMultiple"/>
-                                                        <small class="mt-3">{{asset('images/' . $getAllProfile->resume)}}</small>
+                                                        <small class="mt-3">{{asset('resume/' . $getAllProfile->resume)}}</small>
 
 
                                                     </div>

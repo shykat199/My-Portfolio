@@ -26,10 +26,17 @@ use App\Http\Controllers\SectionController;
 
 Route::get('/', [MainController::class, 'index']);
 
+//middleware->in Middleware and kernel.php
 
 Route::prefix('/admin')->group(function () {
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
+    Route::get('/login',[AdminController::class,'adminLogin'])->name('login')->middleware('IsLoggedIn');
+    Route::post('/login',[AdminController::class,'checkUser'])->name('admin.login');
+
+
+    Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
+
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard')->middleware('Islogout');
     Route::post('/dashboard/update_section', [AdminController::class, 'updateSection'])->name('admin_update_Section');
 
     Route::get('/about', [AdminController::class, 'about'])->name('admin_about');
@@ -83,6 +90,9 @@ Route::prefix('/admin')->group(function () {
     Route::get('/edit/design_skill/{id}', [AdminController::class, 'editDLanguage'])->name('update.DSkill');
     Route::post('/update/design_skill', [AdminController::class, 'updateDLanguage'])->name('update.design.skill');
 
+    Route::get('/delete/message/{id}', [AdminController::class, 'deleteMessage'])->name('message.delete');
+
+
 
     //Route::get('/contact',[AdminController::class,'contact'])->name('contact');
 
@@ -97,6 +107,10 @@ Route::prefix('/admin')->group(function () {
 */
 
 Route::get('/', [PortfolioController::class, 'index']);
+Route::get('/download/resume/{file}', [PortfolioController::class, 'downloadCv'])->name('download.cv');
+
+//send message
+Route::post('/send_message',[PortfolioController::class,'sendMessage'])->name('send.message');
 
 
 
