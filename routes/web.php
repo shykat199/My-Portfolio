@@ -67,8 +67,7 @@ Route::prefix('/admin')->group(function () {
     Route::post('/portfolio/update/professional', [AdminController::class, 'updateEducation'])->name('update.profrssion');
     Route::post('/portfolio/update', [AdminController::class, 'updateEducation'])->name('update.education');
 
-    //Route::get('/portfolio/edit_educational_background/{id}', [AdminController::class, 'editEducation'])->name('edit_educational_background');
-    //Route::post('/portfolio/update_education_background', [AdminController::class, 'updateEducation'])->name('update_education_background');
+
 
 
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin_profile');
@@ -76,7 +75,7 @@ Route::prefix('/admin')->group(function () {
     Route::post('/profile/update_profile', [AdminController::class, 'updateProfile'])->name('admin_updateprofile');
 
 
-    //Route::post('/update/section',[AdminController::class,'updateSection'])->name('admin.section.update');
+
 
     Route::get('/my_skill',[AdminController::class,'mySkill'])->name('admin_my_skill');
 

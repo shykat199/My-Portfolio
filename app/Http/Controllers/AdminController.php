@@ -643,6 +643,8 @@ class AdminController extends Controller
 
         $input = $request->all();
 
+        //print_r($input);
+
         if ($request->hasFile('image')) {
             $fileNameWithTxt = $request->file('image')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
@@ -653,6 +655,7 @@ class AdminController extends Controller
 
             $input['image'] = $fileNameToStore;
         }
+        //$input['link'] = $request->link;
         Project::create($input);
 
         return back()->with('projectAdd','Project Added Successfully');
@@ -707,7 +710,7 @@ class AdminController extends Controller
             ->where('id', $request->id)
             ->update([
                 'name' => $request->name, 'description' => $request->description,
-                'image' => $fileNameToStore, 'category' => $request->category,
+                'image' => $fileNameToStore, 'category' => $request->category,'link'=>$request->link,
 
 
             ]);

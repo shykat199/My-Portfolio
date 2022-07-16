@@ -307,7 +307,12 @@
                                                     <input type="file" name="image" class="form-control">
                                                     <div class="container">
 
-                                                        <img class="img-profile"
+                                                        <label class="text-left" for="exampleInputEmail1"
+                                                               style="float: left;">Project Link</label>
+                                                        <input type="text" name="link" class="form-control" value="{{$edata->link}}"
+                                                               placeholder="Project Link...">
+
+                                                        <img class="img-profile mt-2"
                                                              src="{{asset('project/' . $edata->image)}}" style="height: 120px; width: 120px;">
 
                                                     </div>
@@ -381,7 +386,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="{{route('admin.logout')}}">Logout</a>
             </div>
         </div>
     </div>

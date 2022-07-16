@@ -15,11 +15,13 @@
     <link rel="stylesheet" type="text/css" href="{{url('frontend/css/themify-icons.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{url('frontend/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('frontend/css/gridder.min.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{url('frontend/vendor/animate/animate.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{url('frontend/vendor/owl-carousel/owl.carousel.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('frontend/vendor/animate/animate.css')}}">
+
 
     <link rel="stylesheet" type="text/css"
           href="{{url('frontend/vendor/perfect-scrollbar/css/perfect-scrollbar.css')}}">
@@ -211,7 +213,7 @@
             </div>
 
 
-      {{-- language--}}
+            {{-- language--}}
 
             <div class="col-md-4">
                 <div class="px-lg-3">
@@ -370,127 +372,38 @@
         <h1 class="text-center fw-normal wow fadeInUp">See my work</h1>
         <div class="filterable-button py-3 wow fadeInUp" data-toggle="selected">
             <button class="btn btn-theme-outline selected" data-filter="*">All</button>
-            <button class="btn btn-theme-outline" data-filter=".apps">Application</button>
-            <button class="btn btn-theme-outline" data-filter=".website">Website</button>
-            <button class="btn btn-theme-outline" data-filter=".paper">Research Paper</button>
+
+
+            @foreach($category as $cat)
+
+                <button class="btn btn-theme-outline" data-filter=".{{$cat->pcatagory}}">{{$cat->pcatagory}}</button>
+
+            @endforeach
 
         </div>
 
-        <div class="gridder my-3">
-            <div class="grid-item apps wow zoomIn">
-                <div class="img-place" data-src="{{url('images/pharmacy.jpg')}}" style="height: 300px;">
-                    <img src="{{url('images/pharmacy.jpg')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Pharmacy Management System</h5>
-                        <p>Java Swing Application</p>
+        @foreach($projects as $project)
+
+            <div class="gridder my-3">
+                <div class="grid-item {{$project->category}} wow zoomIn">
+                    <div class="img-place" data-src="{{asset('project/'.$project->image)}}" style="height: 300px;" data-fancybox data-caption="
+          <h5 class='fg-theme'>{{$project->name}}</h5> <p>{{$project->description}}</p>">
+                        <a href="{{$project->link}}">
+                        <img src="{{asset('project/'.$project->image)}}">
+                        <div class="img-caption">
+                            <h5 class="fg-theme">{{$project->name}}</h5>
+                            <p>{{$project->description}}</p>
+                        </div>
+                        </a>
                     </div>
                 </div>
+
             </div>
 
-            <div class="grid-item apps wow zoomIn">
-                <div class="img-place" data-src="{{url('images/carrent.png')}}" style="height: 300px;">
-                    <img src="{{url('images/carrent.png')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Car Rental System</h5>
-                        <p>Java Swing Application</p>
-                    </div>
-                </div>
-            </div>
+        @endforeach
 
-            <div class="grid-item apps wow zoomIn">
-                <div class="img-place" data-src="{{url('images/carrent.png')}}" style="height: 300px;">
-                    <img src="{{url('images/carrent.png')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Car Management System</h5>
-                        <p>Java Swing Application</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid-item apps wow zoomIn">
-                <div class="img-place" data-src="{{url('images/calculator.png')}}" style="height: 300px;" >
-                    <img src="{{url('images/calculator.png')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Scientific Calculator</h5>
-                        <p>Java Swing Application</p>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="grid-item template website wow zoomIn">
-                <div class="img-place" data-src="{{url('images/farm.jpg')}}" style="height: 300px;" >
-                    <img src="{{url('images/farm.jpg')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Farm Store</h5>
-                        <p>E-commerce website (Core php) & Mysql</p>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-item website wow zoomIn">
-                <div class="img-place" data-src="{{url('images/port.png')}}" style="height: 300px;" >
-                    <img src="{{url('images/port.png')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Portfolio Website</h5>
-                        <p>Laravel 8 & mysql</p>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-item graphic website wow zoomIn">
-                <div class="img-place" data-src="{{url('frontend/img/work/work-4.jpg')}}" style="height: 300px;">
-                    <img src="{{url('frontend/img/work/work-4.jpg')}}" alt="" >
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Forum Website</h5>
-                        <p>Core Php & mysql</p>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-item apps website wow zoomIn">
-                <div class="img-place" data-src="{{url('images/customer.jpg')}}" style="height: 300px;">
-                    <img src="{{url('images/customer.jpg')}}" alt="" >
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Customer Management System</h5>
-                        <p>Java Spring Boot</p>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-item graphic website wireframes wow zoomIn">
-                <div class="img-place" data-src="{{url('frontend/img/work/work-4.jpg')}}">
-                    <img src="{{url('frontend/img/work/work-4.jpg')}}" alt="" style="height: 300px;">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Dynamic Carousel</h5>
-                        <p>Core php & MySQLi</p>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="grid-item graphic paper wireframes wow zoomIn">
-                <div class="img-place" data-src="{{url('images/Modern-Agriculture.jpg')}}" style="height: 300px;">
-                    <img src="{{url('images/Modern-Agriculture.jpg')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Modern Agricultural Technology</h5>
-                        <p>We have recently published another paper which is based recent
-                            technology which may help farmer in day to day life.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid-item graphic paper wireframes wow zoomIn">
-                <div class="img-place" data-src="{{url('images/HUMAN-COMPUTER-INTERACTION-1000x500-1.jpg')}}" style="height: 298px;">
-                    <img src="{{url('images/HUMAN-COMPUTER-INTERACTION-1000x500-1.jpg')}}" alt="">
-                    <div class="img-caption">
-                        <h5 class="fg-theme">Human-Computer Interaction</h5>
-                        <p>Recently I have completed my first review paper on HCI & my topic
-                            was Affective Computing The Real-Time HCI System</p>
-                    </div>
-                </div>
-            </div>
-
-
-        </div> <!-- End gridder -->
         <div class="text-center wow fadeInUp">
-            <a href="javascript:void(0)" class="btn btn-theme">Load More</a>
+            <a href="https://github.com/shykat199?tab=repositories" class="btn btn-theme">Load More</a>
         </div>
     </div>
 </div> <!-- End Portfolio page -->
@@ -710,6 +623,7 @@
 <script src="{{url('frontend/js/google-maps.js')}}"></script>
 
 <script src="{{url('frontend/js/topbar-virtual.js')}}"></script>
+
 
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIA_zqjFMsJM_sxP9-6Pde5vVCTyJmUHM&callback=initMap"></script>

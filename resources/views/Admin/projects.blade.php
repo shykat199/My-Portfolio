@@ -394,6 +394,11 @@
                                                               placeholder="Name of project..."></textarea>
 
                                                     <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Link</label>
+                                                    <input type="text" name="link" class="form-control"
+                                                           placeholder="Project Link...">
+
+                                                    <label class="text-left" for="exampleInputEmail1"
                                                            style="float: left;">Project Image</label>
                                                     <input type="file" name="image" class="form-control">
 
@@ -423,6 +428,7 @@
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Description</th>
                                                     <th scope="col">Img</th>
+                                                    <th scope="col">Link</th>
                                                     <th scope="col">Action</th>
 
                                                 </tr>
@@ -438,6 +444,7 @@
                                                                                                         <th>{{ $datas->category }}</th>
                                                                                                         <th>{{ $datas->name }}</th>
                                                                                                         <th>{{ $datas->description }}</th>
+                                                                                                        <th><a href="{{ $datas->link }}">{{ $datas->link }}</a></th>
                                                                                                         <th>
                                                                                                             <img src="{{asset('project/' . $datas->image)}}" style="height: 120px; width: 120px;">
                                                                                                         </th>
@@ -527,7 +534,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="{{route('admin.logout')}}">Logout</a>
             </div>
         </div>
     </div>

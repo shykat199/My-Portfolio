@@ -272,10 +272,17 @@
                                                     <tr>
                                                         <th>{{ $i++ }}</th>
                                                         <th>{{ $datas->name }}</th>
-                                                        <td>{{ $datas->email }}</td>
+                                                        <td>
+                                                            <a href="https://mail.google.com/mail/u/0/#inbox?compose=new">
+                                                                {{ $datas->email }}
+                                                            </a>
+                                                        </td>
+
+
                                                         <td>{{ $datas->subject }}</td>
                                                         <td>{{ $datas->message }}</td>
-                                                        <td><a href="">
+                                                        <td>
+                                                            <a href="https://mail.google.com/mail/u/0/#inbox?compose=new">
                                                                 <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                                             </a>
                                                         </td>
@@ -283,22 +290,23 @@
                                                         <td>
 
 
-
                                                             @if($datas->status==1)
 
                                                                 <a href="/admin/contact/status/{{ $datas->id }}">
-                                                                    <button type="button"  class="btn btn-success">Open</button>
+                                                                    <button type="button" class="btn btn-success">Open
+                                                                    </button>
                                                                 </a>
 
-                                                                @endif
+                                                            @endif
 
-                                                                @if($datas->status==0)
+                                                            @if($datas->status==0)
 
-                                                                    <a href="/admin/contact/status/{{ $datas->id }}">
-                                                                        <button type="button"  class="btn btn-danger">Close</button>
-                                                                    </a>
+                                                                <a href="/admin/contact/status/{{ $datas->id }}">
+                                                                    <button type="button" class="btn btn-danger">Close
+                                                                    </button>
+                                                                </a>
 
-                                                                @endif
+                                                            @endif
 
 
                                                             <a class="btn btn-danger mt-1"
@@ -376,7 +384,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="{{route('admin.logout')}}">Logout</a>
             </div>
         </div>
     </div>

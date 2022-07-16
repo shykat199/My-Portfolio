@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Contact;
 use App\Mail\ContactMail;
+use App\Models\Project;
+use App\Models\ProjectCatagory;
 
 
 class PortfolioController extends Controller
@@ -37,9 +39,11 @@ class PortfolioController extends Controller
         $myResume1=MyResume::get();
         $myHobbies=MyHobby::get();
         $addProfile=Admin::all()->first();
+        $projects=Project::get();
+        $category=ProjectCatagory::get();
 
         return view('index',compact(['data','sectionData','personalInfo',
-            'mySkills','myDesignSkills','myResume','myResume1','myHobbies','addProfile']));
+            'mySkills','myDesignSkills','myResume','myResume1','myHobbies','addProfile','projects','category']));
 
     }
 
