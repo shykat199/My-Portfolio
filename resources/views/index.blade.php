@@ -164,12 +164,14 @@
             </div>
         </div>
     </div>
+
+
     <div class="container py-5">
         <h1 class="text-center fw-normal wow fadeIn">My Skills</h1>
         <div class="row py-3">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="px-lg-3">
-                    <h4 class="wow fadeInUp">Coding / Programming Skills</h4>
+                    <h4 class="wow fadeInUp">Programming Skills</h4>
 
                     @foreach($mySkills as $mySkill)
 
@@ -187,7 +189,7 @@
 
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="px-lg-3">
                     <h4 class="wow fadeInUp">Design Skills</h4>
 
@@ -205,10 +207,14 @@
                     @endforeach
 
                 </div>
+
+            </div>
+
+
+      {{-- language--}}
+
+            <div class="col-md-4">
                 <div class="px-lg-3">
-                    <hr class="mt-5" style="border-top: 1px solid #8c8b8b;">
-                </div>
-                <div class="px-lg-3" style="margin-top: 40px;">
                     <h4 class="wow fadeInUp">Language</h4>
 
                     <div class="progress-wrapper wow fadeInUp">
@@ -238,8 +244,9 @@
 
                 </div>
 
-
             </div>
+
+
         </div>
     </div>
     <div class="container pt-5">

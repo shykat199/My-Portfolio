@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\SectionControl;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,9 @@ use App\Models\MySkill;
 use App\Models\DesignSkill;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Session;
+use App\Models\ProjectCatagory;
+use App\Models\Project;
+use Illuminate\Support\Facades\File;
 
 
 class AdminController extends Controller
@@ -56,19 +60,21 @@ class AdminController extends Controller
             $allSection = SectionControl::all()->first();
             $allHome = HomeController::all()->first();
             $addProfile = Admin::all()->first();
+            $countAllContact = count(Contact::all());
 
             // return view('Admin.Index',compact('allSection'));
 
-            return view('Admin.Index', compact(['allSection', 'allHome', 'addProfile']));
+            return view('Admin.Index', compact(['allSection', 'allHome', 'addProfile', 'countAllContact']));
 
         }
 
 
     }
 
-    public function logout(){
+    public function logout()
+    {
 
-        if (Session::has('loginId')){
+        if (Session::has('loginId')) {
             Session::pull('loginId');
             return redirect()->route('login');
         }
@@ -100,7 +106,8 @@ class AdminController extends Controller
         $allPersonalInfo = Personalinfo::all()->first();
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
-        return view('Admin.about', compact(['allPersonalInfo', 'addProfile', 'allHome']));
+        $countAllContact = count(Contact::all());
+        return view('Admin.about', compact(['allPersonalInfo', 'addProfile', 'allHome', 'countAllContact']));
     }
 
 
@@ -128,8 +135,9 @@ class AdminController extends Controller
 
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
 
-        return view('Admin.home', compact(['allHome', 'addProfile']));
+        return view('Admin.home', compact(['allHome', 'addProfile', 'countAllContact']));
 
     }
 
@@ -156,10 +164,10 @@ class AdminController extends Controller
     {
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
-
         $allContact = Contact::get();
+        $countAllContact = count(Contact::all());
 
-        return view('Admin.contact', compact(['allHome', 'addProfile', 'allContact']));
+        return view('Admin.contact', compact(['allHome', 'addProfile', 'allContact', 'countAllContact']));
     }
 
     public function updateContactStatus($id)
@@ -192,6 +200,7 @@ class AdminController extends Controller
     {
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
         $data = DB::table('my_resumes')
             ->where('type', '=', 'p')
             ->get();
@@ -200,7 +209,7 @@ class AdminController extends Controller
             ->where('type', '=', 'e')
             ->get();
 
-        return view('Admin.portfolio', compact(['allHome', 'addProfile', 'data', 'data1']));
+        return view('Admin.portfolio', compact(['allHome', 'addProfile', 'data', 'data1', 'countAllContact']));
     }
 
 
@@ -226,10 +235,11 @@ class AdminController extends Controller
 
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
 
         $edata1 = DB::table('my_resumes')->where('id', $id)
             ->first();
-        return view('Admin.EditProUpdateresume', compact(['edata1', 'allHome', 'addProfile']));
+        return view('Admin.EditProUpdateresume', compact(['edata1', 'allHome', 'addProfile', 'countAllContact']));
 
     }
 
@@ -238,12 +248,13 @@ class AdminController extends Controller
 
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
 
         $edata = DB::table('my_resumes')->where('id', $id)
             ->first();
 
 
-        return view('Admin.EditEduUpdateresume', compact(['edata', 'allHome', 'addProfile']));
+        return view('Admin.EditEduUpdateresume', compact(['edata', 'allHome', 'addProfile', 'countAllContact']));
 
     }
 
@@ -298,12 +309,34 @@ class AdminController extends Controller
         $getAllProfile = Admin::all()->first();
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
-        return view('Admin.profile', compact(['getAllProfile', 'allHome', 'addProfile']));
+        $countAllContact = count(Contact::all());
+        return view('Admin.profile', compact(['getAllProfile', 'allHome', 'addProfile', 'countAllContact']));
         //return view('Admin.profile');
     }
 
     public function addProfile(Request $request)
     {
+
+//        $input = $request->all();
+//
+//        $fileNameWithTxt = $request->file('image')->getClientOriginalName();
+//        $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
+//        $extension = $request->file('image')->getClientOriginalExtension();
+//
+//        $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+//        $path = $request->file('image')->move('project', $fileNameToStore);
+//        $input['image'] = $fileNameToStore;
+//
+//        $projectDetails = DB::table('projects')
+//            ->where('id', $request->id)
+//            ->update([
+//                'name' => $request->name, 'description' => $request->description,
+//                'image' => $fileNameToStore, 'category' => $request->category,
+//
+//
+//            ]);
+//
+//        return redirect()->route('admin.project')->with('upProject', 'Project Updated Successfully');
 
         $input = $request->all();
 
@@ -356,44 +389,52 @@ class AdminController extends Controller
     {
 //        $input2 = $request->all();
 //        //img--------
-//        if ($request->hasFile('image')){
-        $fileNameWithTxt = $request->file('image')->getClientOriginalName();
-        $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
-        $extension = $request->file('image')->getClientOriginalExtension();
+        $input = $request->all();
 
-        $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
-        $path = $request->file('image')->move('images', $fileNameToStore);
-        $input['img'] = $fileNameToStore;
-        // }
+        //img--------
+        //if ($request->hasFile('image')) {
+            $fileNameWithTxt = $request->file('image')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
+            $extension = $request->file('image')->getClientOriginalExtension();
+
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            $path = $request->file('image')->move('images', $fileNameToStore);
+
+            $input['image'] = $fileNameToStore;
+        //}
 
 
         //end image------
 
 
         //resume------
-//        if ($request->file('resume')){
-        $fileNameWithTxt1 = $request->file('resume')->getClientOriginalName();
-        $fileName1 = pathinfo($fileNameWithTxt1, PATHINFO_FILENAME);
-        $extension1 = $request->file('resume')->getClientOriginalExtension();
+        //if ($request->hasFile('resume')) {
+            $fileNameWithTxt1 = $request->file('resume')->getClientOriginalName();
+            $fileName1 = pathinfo($fileNameWithTxt1, PATHINFO_FILENAME);
+            $extension1 = $request->file('resume')->getClientOriginalExtension();
 
-        $fileNameToStore1 = $fileName1 . '_' . time() . '.' . $extension1;
-        $path = $request->file('resume')->move('resume', $fileNameToStore1);
-        $input['resume'] = $fileNameToStore1;
-        //  }
+            $fileNameToStore1 = $fileName1 . '_' . time() . '.' . $extension1;
+            $path = $request->file('resume')->move('resume', $fileNameToStore1);
+
+            $input['resume'] = $fileNameToStore1;
+        //}
 
 
         // end resume------
 
-        // Admin::updated($input2);
-        $allAboutInfo = DB::table('admins')
-            ->where('id', 1)
+       // Admin::create($input);
+        $projectDetails = DB::table('admins')
+            ->where('id', '=',1)
             ->update([
-
                 'email' => $request->email, 'password' => $request->password,
-                'img' => $fileNameToStore, 'resume' => $fileNameToStore1,
+                 'img' => $fileNameToStore, 'resume' => $fileNameToStore1,
 
 
             ]);
+
+
+
+
 
         return redirect()->route('admin_profile')->with('success', "Profile Updated successfully");
     }
@@ -406,9 +447,10 @@ class AdminController extends Controller
 
         $pskill = MySkill::get();
         $dskill = DesignSkill::get();
+        $countAllContact = count(Contact::all());
 
 
-        return view('Admin.myskill', compact(['allHome', 'addProfile', 'pskill', 'dskill']));
+        return view('Admin.myskill', compact(['allHome', 'addProfile', 'pskill', 'dskill', 'countAllContact']));
 
     }
 
@@ -443,11 +485,12 @@ class AdminController extends Controller
 
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
 
         $edata = DB::table('my_skills')->where('id', $id)->first();
 
 
-        return view('Admin.editProgrammingSkill', compact(['edata', 'allHome', 'addProfile']));
+        return view('Admin.editProgrammingSkill', compact(['edata', 'allHome', 'addProfile', 'countAllContact']));
 
     }
 
@@ -498,11 +541,12 @@ class AdminController extends Controller
 
         $allHome = HomeController::all()->first();
         $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
 
         $edata = DB::table('design_skills')->where('id', $id)->first();
 
 
-        return view('Admin.editDesignSkill', compact(['edata', 'allHome', 'addProfile']));
+        return view('Admin.editDesignSkill', compact(['edata', 'allHome', 'addProfile', 'countAllContact']));
 
     }
 
@@ -521,14 +565,154 @@ class AdminController extends Controller
 
     }
 
-    public function deleteMessage($id){
+    public function deleteMessage($id)
+    {
 
-        Contact::where('id',$id)->delete();
-        return back()->with('deleteMessage','Message deleted successfully');
+        Contact::where('id', $id)->delete();
+        return back()->with('deleteMessage', 'Message deleted successfully');
 
     }
 
 
+    public function projectSection()
+    {
 
+        $allHome = HomeController::all()->first();
+        $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
+        $project = ProjectCatagory::paginate(3);
+        $allProjectDetail=Project::paginate(4);
+        $allcategory = ProjectCatagory::all();
+        // $cat=
+
+
+        return view('Admin.projects', compact(['allHome', 'addProfile', 'countAllContact', 'project', 'allcategory','allProjectDetail']));
+
+    }
+
+    public function addCategory(Request $request)
+    {
+
+        $category = $request->pcatagory;
+
+        $projectCategory = new ProjectCatagory();
+
+        $projectCategory->pcatagory = $category;
+
+        $projectCategory->save();
+
+        return back()->with('category', 'Project Category added');
+
+    }
+
+
+    public function deleteCategory($id){
+
+        ProjectCatagory::where('id','=',$id)->delete();
+        return back()->with('dltcat','Category deleted successfully');
+
+    }
+
+    public function editCategory($id){
+        $allHome = HomeController::all()->first();
+        $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
+        $allcategory = ProjectCatagory::all()->first();
+        $edata = DB::table('project_catagories')->where('id', $id)->first();
+
+        return view('Admin.editCategory', compact(['allHome', 'addProfile', 'countAllContact', 'allcategory','edata']));
+
+    }
+
+    public function updateCategory(Request $request){
+
+        $category = ProjectCatagory::find($request->id);
+
+        $category->pcatagory = $request->input('pcatagory');
+
+
+        $category->save();
+
+        return redirect()->route('admin.project')->with('upCategory', 'Category Updated Successfully');
+
+
+    }
+
+    public function addProject(Request $request)
+    {
+
+        $input = $request->all();
+
+        if ($request->hasFile('image')) {
+            $fileNameWithTxt = $request->file('image')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
+            $extension = $request->file('image')->getClientOriginalExtension();
+
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            $path = $request->file('image')->move('project', $fileNameToStore);
+
+            $input['image'] = $fileNameToStore;
+        }
+        Project::create($input);
+
+        return back()->with('projectAdd','Project Added Successfully');
+
+    }
+
+    public function deleteProject ($id){
+
+        //Project::where('id','=',$id)->delete();
+        $project=Project::find($id);
+        $dest=public_path('project/').$project->image;
+
+        if (File::exists($dest)){
+
+            File::delete($dest);
+
+        }
+
+        $project->delete();
+
+        return back()->with('dltproject','Project Deleted Successfully');
+
+    }
+
+    public function editProject($id){
+
+        $allHome = HomeController::all()->first();
+        $addProfile = Admin::all()->first();
+        $countAllContact = count(Contact::all());
+        $allcategory = ProjectCatagory::all();
+        $edata = DB::table('projects')->where('id', $id)->first();
+
+        return view('Admin.editProject', compact(['allHome', 'addProfile', 'countAllContact', 'allcategory','edata']));
+
+    }
+
+    public function updateProject(Request $request){
+
+       // $projectid = Project::find($request->id);
+
+        $input = $request->all();
+
+        $fileNameWithTxt = $request->file('image')->getClientOriginalName();
+        $fileName = pathinfo($fileNameWithTxt, PATHINFO_FILENAME);
+        $extension = $request->file('image')->getClientOriginalExtension();
+
+        $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+        $path = $request->file('image')->move('project', $fileNameToStore);
+        $input['image'] = $fileNameToStore;
+
+        $projectDetails = DB::table('projects')
+            ->where('id', $request->id)
+            ->update([
+                'name' => $request->name, 'description' => $request->description,
+                'image' => $fileNameToStore, 'category' => $request->category,
+
+
+            ]);
+
+        return redirect()->route('admin.project')->with('upProject', 'Project Updated Successfully');
+    }
 
 }

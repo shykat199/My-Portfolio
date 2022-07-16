@@ -93,8 +93,16 @@ Route::prefix('/admin')->group(function () {
     Route::get('/delete/message/{id}', [AdminController::class, 'deleteMessage'])->name('message.delete');
 
 
+    Route::get('/project/section',[AdminController::class,'projectSection'])->name('admin.project');
+    Route::post('/project/add_category',[AdminController::class,'addCategory'])->name('admin.addProjectCategory');
+    Route::get('portfolio/delete/category/{id}',[AdminController::class,'deleteCategory'])->name('admin.deleteCategory');
+    Route::get('portfolio/edit/category/{id}',[AdminController::class,'editCategory'])->name('admin.editCategory');
+    Route::post('portfolio/update/category',[AdminController::class,'updateCategory'])->name('admin.updateProjectCategory');
 
-    //Route::get('/contact',[AdminController::class,'contact'])->name('contact');
+    Route::post('/project/add_project',[AdminController::class,'addProject'])->name('addProject');
+    Route::get('portfolio/delete/project/{id}',[AdminController::class,'deleteProject'])->name('admin.deleteProject');
+    Route::get('portfolio/edit/project/{id}',[AdminController::class,'editProject'])->name('admin.editProject');
+    Route::post('portfolio/update/project',[AdminController::class,'updateProject'])->name('updateProject');
 
 
 });

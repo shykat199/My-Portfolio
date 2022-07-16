@@ -191,7 +191,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope fa-fw"></i>
                             <!-- Counter - Messages -->
-                            <span class="badge badge-danger badge-counter">7</span>
+                            <span class="badge badge-danger badge-counter">{{$countAllContact}}</span>
                         </a>
                         <!-- Dropdown - Messages -->
                     </li>
@@ -384,6 +384,7 @@
                                                     Update Image & Resume
                                                 </div>
                                                 <div class="card-body border-success">
+                                                    <input type="hidden" name="id" value="{{$getAllProfile->id}}">
                                                     <div class="">
                                                         <input type="file" name="image" class="form-control"
                                                                onchange="previewImage(this)">

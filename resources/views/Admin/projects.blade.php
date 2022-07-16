@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css' />
+    <link rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css' />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css" />
 
     <title>SB Admin 2 - Dashboard</title>
 
@@ -245,13 +249,6 @@
 
                             </div>
 
-                            <div class="container">
-                                <a href="{{route('admin.project')}}">
-                                    <button href="" class="btn btn-primary" style="height: 50px;">Go To Project
-                                        Section
-                                    </button>
-                                </a>
-                            </div>
 
                         </div>
 
@@ -266,50 +263,34 @@
                 <div class="container">
 
                     <div class="card">
-                        <h5 class="card-header">Education & Professional Background</h5>
+                        <h5 class="card-header">Project Category</h5>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
 
                                     <div class="card text-center">
                                         <div class="card-header">
-                                            Add Education Background
+                                            Add Project Category
                                         </div>
                                         <div class="card-body">
-                                            <form action="{{route('add_education_background')}}" method="post"
+                                            <form action="{{route('admin.addProjectCategory')}}" method="post"
                                                   enctype="multipart/form-data">
                                                 @csrf
 
-                                                <input type="hidden" name="type" value="e">
+{{--                                                <input type="hidden" name="type" value="e">--}}
+                                                @if(\Illuminate\Support\Facades\Session::has('category'))
+                                                <div class="alert alert-success" role="alert">
+                                                        <p>{{\Illuminate\Support\Facades\Session::get('category')}}</p>
+
+                                                </div>
+                                                @endif
 
                                                 <div class="form-group">
                                                     <label class="text-left" for="exampleInputEmail1"
-                                                           style="float: left;">Degree</label>
-                                                    <input type="text" name="title" class="form-control"
-                                                           id="exampleInputEmail1" aria-describedby="emailHelp"
-                                                           placeholder="Name of degree...">
+                                                           style="float: left;">Project Category</label>
+                                                    <input type="text" name="pcatagory" class="form-control"
+                                                           placeholder="Name of project category...">
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="text-left" for="exampleInputPassword1"
-                                                           style="float: left;">University</label>
-                                                    <input type="text" name="organization" class="form-control"
-                                                           id="exampleInputPassword1" placeholder="University name...">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="text-left" for="exampleInputPassword1"
-                                                           style="float: left;">Duration</label>
-                                                    <input type="text" name="time" class="form-control"
-                                                           id="exampleInputPassword1"
-                                                           placeholder="Duration of Degree Ex: 2018-2022 , 2020-2023">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="text-left" style="float: left;">Short
-                                                        Description</label>
-                                                    <textarea name="about_exp" rows="4" cols="50"
-                                                              placeholder="About university...."
-                                                              class="form-control"></textarea>
-                                                </div>
-
                                                 <button type="submit" style="float: left;" class="btn btn-primary">
                                                     Submit
                                                 </button>
@@ -322,48 +303,49 @@
 
                                     <div class="card text-center">
                                         <div class="card-header">
-                                            Add Professional Background
+                                            Project Category List
                                         </div>
                                         <div class="card-body">
-                                            <form action="{{route('add_profesional_background')}}" method="post"
-                                                  enctype="multipart/form-data">
-                                                @csrf
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Action</th>
 
-                                                <input type="hidden" name="type" value="p">
+                                                </tr>
+                                                </thead>
 
-                                                <div class="form-group">
-                                                    <label class="text-left" for="exampleInputEmail1"
-                                                           style="float: left;">Post Name</label>
-                                                    <input type="text" name="title" class="form-control"
-                                                           id="exampleInputEmail1" aria-describedby="emailHelp"
-                                                           placeholder="Name of post Ex: Software Engineer,Java Developer">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="text-left" for="exampleInputPassword1"
-                                                           style="float: left;">Organization Name</label>
-                                                    <input type="text" name="organization" class="form-control"
-                                                           id="exampleInputPassword1"
-                                                           placeholder="Organization name...">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="text-left" for="exampleInputPassword1"
-                                                           style="float: left;">Duration</label>
-                                                    <input type="text" name="time" class="form-control"
-                                                           id="exampleInputPassword1"
-                                                           placeholder="Duration of Degree Ex: 2018-2022 , 2020-2023">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="text-left" style="float: left;">Short
-                                                        Description</label>
-                                                    <textarea name="about_exp" rows="4" cols="50"
-                                                              placeholder="About Organization...."
-                                                              class="form-control"></textarea>
-                                                </div>
+                                                <tbody>
+                                                @php
+                                                    $i = 1;
+                                                @endphp
+                                                @foreach ($project as $datas)
+                                                    <tr>
+                                                        <th>{{ $i++ }}</th>
+                                                        <th>{{ $datas->pcatagory }}</th>
 
-                                                <button type="submit" style="float: left;" class="btn btn-primary">
-                                                    Submit
-                                                </button>
-                                            </form>
+
+                                                        <td>
+                                                            <a class="btn btn-warning"
+                                                               href="/admin/portfolio/edit/category/{{ $datas->id }}">
+                                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                            </a>
+                                                            <a class="btn btn-danger mt-1"
+                                                               href="/admin/portfolio/delete/category/{{ $datas->id }}">
+                                                                <i class="fa-solid fa-trash"></i>
+                                                            </a>
+                                                        </td>
+
+                                                    </tr>
+                                                @endforeach
+                                                <div class="d-flex justify-content-center">
+                                                    {{$project->links('pagination::bootstrap-4')}}
+                                                </div>
+                                                </tbody>
+
+
+                                            </table>
 
                                         </div>
 
@@ -376,121 +358,111 @@
                         </div>
                     </div>
 
-
-                    <div class="card mt-3">
-                        <h5 class="card-header">All List</h5>
+                    <div class="card mt-2">
+                        <h5 class="card-header">Add Project</h5>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
 
                                     <div class="card text-center">
                                         <div class="card-header">
-                                            Education Background List
+                                            Add Project Details
                                         </div>
                                         <div class="card-body">
+                                            <form id="projectAdd" action="{{route('addProject')}}" method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
 
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Degree</th>
-                                                    <th scope="col">University</th>
-                                                    <th scope="col">Duration</th>
-                                                    <th scope="col">Short Description</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                                </thead>
+                                                <div class="form-group">
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Category</label>
+                                                    <select class="browser-default custom-select" name="category">
+                                                        <option selected>Open this select menu</option>
+                                                        @foreach($allcategory as $datas)
+                                                        <option value="{{$datas->pcatagory}}">{{$datas->pcatagory}}</option>
+                                                        @endforeach
+                                                    </select>
 
-                                                <tbody>
-                                                @php
-                                                    $i = 1;
-                                                @endphp
-                                                @foreach ($data1 as $datas)
-                                                    <tr>
-                                                        <th>{{ $i++ }}</th>
-                                                        <th>{{ $datas->title }}</th>
-                                                        <td>{{ $datas->organization }}</td>
-                                                        <td>{{ $datas->time }}</td>
-                                                        <td>{{ $datas->about_exp }}</td>
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Name</label>
+                                                    <input type="text" name="name" class="form-control"
+                                                           placeholder="Name of project...">
 
-                                                        <td>
-                                                            <a class="btn btn-warning"
-                                                               href="/admin/portfolio/educational/{{ $datas->id }}">
-                                                                <i class="fa-solid fa-pen-to-square"></i>
-                                                            </a>
-                                                            <a class="btn btn-danger mt-1"
-                                                               href="/admin/portfolio/delete/educational/{{ $datas->id }}">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </a>
-                                                        </td>
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Description</label>
+                                                    <textarea name="description" class="form-control"
+                                                              placeholder="Name of project..."></textarea>
 
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Image</label>
+                                                    <input type="file" name="image" class="form-control">
 
+                                                </div>
+                                                <button type="submit" style="float: left;" id="pAdd" class="btn btn-primary">
+                                                    Submit
+                                                </button>
+                                            </form>
                                         </div>
-
-
                                     </div>
 
                                 </div>
-
                             </div>
-
-
-                            <div class="row mt-3">
+                            <div class="row">
                                 <div class="col">
 
-                                    <div class="card text-center">
+                                    <div class="card text-center mt-2">
                                         <div class="card-header">
-                                            Professional Background List
+                                            Project Category List
                                         </div>
                                         <div class="card-body">
-
                                             <table class="table">
                                                 <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Post Name</th>
-                                                    <th scope="col">Organization</th>
-                                                    <th scope="col">Duration</th>
-                                                    <th scope="col">Short Description</th>
+                                                    <th scope="col">Category</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col">Img</th>
                                                     <th scope="col">Action</th>
+
                                                 </tr>
                                                 </thead>
 
-                                                <tbody>
-                                                @php
-                                                    $i = 1;
-                                                @endphp
-                                                @foreach ($data as $datas)
-                                                    <tr>
-                                                        <th>{{ $i++ }}</th>
-                                                        <th>{{ $datas->title }}</th>
-                                                        <td>{{ $datas->organization }}</td>
-                                                        <td>{{ $datas->time }}</td>
-                                                        <td>{{ $datas->about_exp }}</td>
+                                                                                                <tbody>
+                                                                                                @php
+                                                                                                    $i = 1;
+                                                                                                @endphp
+                                                                                                @foreach ($allProjectDetail as $datas)
+                                                                                                    <tr>
+                                                                                                        <th>{{ $i++ }}</th>
+                                                                                                        <th>{{ $datas->category }}</th>
+                                                                                                        <th>{{ $datas->name }}</th>
+                                                                                                        <th>{{ $datas->description }}</th>
+                                                                                                        <th>
+                                                                                                            <img src="{{asset('project/' . $datas->image)}}" style="height: 120px; width: 120px;">
+                                                                                                        </th>
 
-                                                        <td>
-                                                            <a class="btn btn-warning"
-                                                               href="/admin/portfolio/professional/{{ $datas->id }}">
-                                                                <i class="fa-solid fa-pen-to-square"></i>
-                                                            </a>
-                                                            <a class="btn btn-danger mt-1"
-                                                               href="/admin/portfolio/delete/educational/{{ $datas->id }}">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </a>
-                                                        </td>
+                                                                                                        <td>
+                                                                                                            <a class="btn btn-warning"
+                                                                                                               href="/admin/portfolio/edit/project/{{ $datas->id }}">
+                                                                                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                                                                            </a>
+                                                                                                            <a class="btn btn-danger mt-1"
+                                                                                                               href="/admin/portfolio/delete/project/{{ $datas->id }}">
+                                                                                                                <i class="fa-solid fa-trash"></i>
+                                                                                                            </a>
+                                                                                                        </td>
 
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
+                                                                                                    </tr>
+                                                                                                @endforeach
+                                                                                                </tbody>
 
+                                                <div class="d-flex justify-content-center">
+                                                    {{$allProjectDetail->links('pagination::bootstrap-4')}}
+                                                </div>
                                             </table>
 
                                         </div>
-
 
                                     </div>
 
@@ -577,6 +549,7 @@
 <!-- Page level custom scripts -->
 <script src="{{url('/admin/js/demo/chart-area-demo.js')}}"></script>
 <script src="{{url('/admin/js/demo/chart-pie-demo.js')}}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
 </body>
 

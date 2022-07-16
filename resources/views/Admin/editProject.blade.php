@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css' />
+    <link rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css' />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css" />
 
     <title>SB Admin 2 - Dashboard</title>
 
@@ -49,6 +53,8 @@
             <a class="nav-link" href="#">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
+
+
         </li>
 
         <!-- Divider -->
@@ -200,8 +206,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span
-                                class="mr-2 d-none d-lg-inline text-gray-600 small">{{$allHome->title}} {{$allHome->lasttitle}}
-                            </span>
+                                class="mr-2 d-none d-lg-inline text-gray-600 small">{{$allHome->title}} {{$allHome->lasttitle}}</span>
                             <img class="img-profile rounded-circle"
                                  src="{{asset('images/' . $addProfile->img)}}">
                         </a>
@@ -212,7 +217,6 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a>
-
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -232,100 +236,101 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <div class="container">
+
+                        <!-- Large button groups (default and split) -->
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-lg dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Go to other section
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{route('admin_my_skill')}}">My Skill Section</a>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
 
                 </div>
 
                 <!-- Content Row -->
-                <div class="row">
-                    <div class="container">
 
-                        <div class="card mt-3">
-                            <h5 class="card-header">All Contact List</h5>
+                <div class="container">
 
+                    <div class="card mt-2">
+                        <h5 class="card-header">Update Project</h5>
+                        <div class="card-body">
                             <div class="row">
-                                <div class="col mt-2 ml-2 mb-2">
+                                <div class="col">
 
                                     <div class="card text-center">
                                         <div class="card-header">
-                                            Message / Contact List
+                                            Update Project Details
                                         </div>
                                         <div class="card-body">
+                                            <form id="projectAdd" action="{{route('updateProject')}}" method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
 
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">Email</th>
-                                                    <th scope="col">Subject</th>
-                                                    <th scope="col">Message</th>
-                                                    <th scope="col">Reply</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                                </thead>
+                                                <input type="hidden" name="id" value="{{$edata->id}}">
 
-                                                <tbody>
-                                                @php
-                                                    $i = 1;
-                                                @endphp
-                                                @foreach ($allContact as $datas)
-                                                    <tr>
-                                                        <th>{{ $i++ }}</th>
-                                                        <th>{{ $datas->name }}</th>
-                                                        <td>{{ $datas->email }}</td>
-                                                        <td>{{ $datas->subject }}</td>
-                                                        <td>{{ $datas->message }}</td>
-                                                        <td><a href="">
-                                                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                                            </a>
-                                                        </td>
+                                                <div class="form-group">
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Category</label>
+                                                    <select class="browser-default custom-select" name="category">
+                                                        <option selected>Open this select menu</option>
+                                                        @foreach($allcategory as $datas)
+                                                            <option value="{{$datas->pcatagory}}"
 
-                                                        <td>
+                                                            {{$datas->id == $edata->id  ? 'selected' : ''}}
 
+                                                     >{{$datas->pcatagory}}</option>
+                                                        @endforeach
+                                                    </select>
 
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Name</label>
+                                                    <input type="text" name="name" class="form-control" value="{{$edata->name}}"
+                                                           placeholder="Name of project...">
 
-                                                            @if($datas->status==1)
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Description</label>
+                                                    <textarea name="description" class="form-control"
+                                                              placeholder="Name of project...">{{$edata->description}}</textarea>
 
-                                                                <a href="/admin/contact/status/{{ $datas->id }}">
-                                                                    <button type="button"  class="btn btn-success">Open</button>
-                                                                </a>
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Image</label>
+                                                    <input type="file" name="image" class="form-control">
+                                                    <div class="container">
 
-                                                                @endif
+                                                        <img class="img-profile"
+                                                             src="{{asset('project/' . $edata->image)}}" style="height: 120px; width: 120px;">
 
-                                                                @if($datas->status==0)
+                                                    </div>
 
-                                                                    <a href="/admin/contact/status/{{ $datas->id }}">
-                                                                        <button type="button"  class="btn btn-danger">Close</button>
-                                                                    </a>
-
-                                                                @endif
-
-
-                                                            <a class="btn btn-danger mt-1"
-                                                               href="/admin/delete/message/{{ $datas->id }}">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </a>
-                                                        </td>
-
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-
+                                                </div>
+                                                <button type="submit" style="float: left;" id="pAdd" class="btn btn-primary">
+                                                    Update
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
 
                                 </div>
-
-
                             </div>
 
-                        </div>
 
+
+                        </div>
                     </div>
 
 
                 </div>
+
 
             </div>
         </div>
@@ -398,6 +403,7 @@
 <!-- Page level custom scripts -->
 <script src="{{url('/admin/js/demo/chart-area-demo.js')}}"></script>
 <script src="{{url('/admin/js/demo/chart-pie-demo.js')}}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
 </body>
 

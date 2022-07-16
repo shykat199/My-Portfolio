@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css'/>
+    <link rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css'/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css"/>
 
     <title>SB Admin 2 - Dashboard</title>
 
@@ -49,6 +53,8 @@
             <a class="nav-link" href="#">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
+
+
         </li>
 
         <!-- Divider -->
@@ -200,8 +206,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span
-                                class="mr-2 d-none d-lg-inline text-gray-600 small">{{$allHome->title}} {{$allHome->lasttitle}}
-                            </span>
+                                class="mr-2 d-none d-lg-inline text-gray-600 small">{{$allHome->title}} {{$allHome->lasttitle}}</span>
                             <img class="img-profile rounded-circle"
                                  src="{{asset('images/' . $addProfile->img)}}">
                         </a>
@@ -212,7 +217,6 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a>
-
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -236,82 +240,46 @@
                 </div>
 
                 <!-- Content Row -->
-                <div class="row">
-                    <div class="container">
 
-                        <div class="card mt-3">
-                            <h5 class="card-header">All Contact List</h5>
 
+                <div class="container">
+
+                    <div class="card">
+                        <h5 class="card-header">Update Project Category</h5>
+                        <div class="card-body">
                             <div class="row">
-                                <div class="col mt-2 ml-2 mb-2">
+                                <div class="col">
 
                                     <div class="card text-center">
                                         <div class="card-header">
-                                            Message / Contact List
+                                            Update Project Category
                                         </div>
                                         <div class="card-body">
+                                            <form action="{{route('admin.updateProjectCategory')}}" method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
 
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">Email</th>
-                                                    <th scope="col">Subject</th>
-                                                    <th scope="col">Message</th>
-                                                    <th scope="col">Reply</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                                </thead>
+                                                {{--                                                <input type="hidden" name="type" value="e">--}}
+                                                @if(\Illuminate\Support\Facades\Session::has('category'))
+                                                    <div class="alert alert-success" role="alert">
+                                                        <p>{{\Illuminate\Support\Facades\Session::get('category')}}</p>
 
-                                                <tbody>
-                                                @php
-                                                    $i = 1;
-                                                @endphp
-                                                @foreach ($allContact as $datas)
-                                                    <tr>
-                                                        <th>{{ $i++ }}</th>
-                                                        <th>{{ $datas->name }}</th>
-                                                        <td>{{ $datas->email }}</td>
-                                                        <td>{{ $datas->subject }}</td>
-                                                        <td>{{ $datas->message }}</td>
-                                                        <td><a href="">
-                                                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                                            </a>
-                                                        </td>
+                                                    </div>
+                                                @endif
 
-                                                        <td>
+                                                <div class="form-group">
 
+                                                    <input type="hidden" name="id" value="{{$edata->id}}">
 
-
-                                                            @if($datas->status==1)
-
-                                                                <a href="/admin/contact/status/{{ $datas->id }}">
-                                                                    <button type="button"  class="btn btn-success">Open</button>
-                                                                </a>
-
-                                                                @endif
-
-                                                                @if($datas->status==0)
-
-                                                                    <a href="/admin/contact/status/{{ $datas->id }}">
-                                                                        <button type="button"  class="btn btn-danger">Close</button>
-                                                                    </a>
-
-                                                                @endif
-
-
-                                                            <a class="btn btn-danger mt-1"
-                                                               href="/admin/delete/message/{{ $datas->id }}">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </a>
-                                                        </td>
-
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-
+                                                    <label class="text-left" for="exampleInputEmail1"
+                                                           style="float: left;">Project Category</label>
+                                                    <input type="text" name="pcatagory" class="form-control" value="{{$edata->pcatagory}}"
+                                                           placeholder="Name of project category...">
+                                                </div>
+                                                <button type="submit" style="float: left;" class="btn btn-primary">
+                                                    Update
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
 
@@ -319,22 +287,15 @@
 
 
                             </div>
-
                         </div>
-
                     </div>
-
-
                 </div>
 
             </div>
         </div>
 
     </div>
-</div>
-
-</div>
-<!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 
 </div>
 <!-- End of Main Content -->
@@ -398,6 +359,7 @@
 <!-- Page level custom scripts -->
 <script src="{{url('/admin/js/demo/chart-area-demo.js')}}"></script>
 <script src="{{url('/admin/js/demo/chart-pie-demo.js')}}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
 </body>
 
